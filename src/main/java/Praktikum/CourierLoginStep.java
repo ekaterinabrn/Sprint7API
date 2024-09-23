@@ -10,8 +10,7 @@ import static org.hamcrest.Matchers.notNullValue;
 
 public class CourierLoginStep {
     @Step("Create courier login")
-    public Response courierLogin(String login, String password) {
-        CourierLogin courierLogin = new CourierLogin(login, password);
+    public static Response courierLogin(CourierLogin courierLogin) {
         return given().header("Content-type", "application/json")
                 .body(courierLogin)
                 .when()

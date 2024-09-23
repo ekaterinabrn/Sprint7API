@@ -9,8 +9,7 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class CourierStep {
     @Step("Create courier")
-    public Response createCourier(String login, String password, String firstName) {
-        Courier courier = new Courier(login, password, firstName);
+    public static Response createCourier(Courier courier) {
         return given()
                 .header("Content-type", "application/json")
                 .body(courier)
@@ -19,7 +18,7 @@ public class CourierStep {
     }
 
     @Step("Courier create success  Status code 201 create and body ok true")
-    public void courierAfterCreationSucc(Response response) {
+    public void courierAfterCreationSuccess(Response response) {
         response.then().statusCode(201).and().assertThat().body("ok", equalTo(true));
     }
 
@@ -29,7 +28,7 @@ public class CourierStep {
     }
 
     @Step("The code and the body of the response when creating a courier when the login is already occupied")
-    public void courierCreationLoginTwice(Response response) {
+    public void courierCreationLoginAlreadyUsed(Response response) {
         response.then().statusCode(409).and().assertThat().body("message", equalTo("Этот логин уже используется"));
     }
 
