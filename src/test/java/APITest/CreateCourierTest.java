@@ -2,6 +2,7 @@ package APITest;
 
 import Praktikum.Client.CourierClient;
 import Praktikum.Client.LogINClient;
+import Praktikum.Constant.RandomDataCourier;
 import Praktikum.Courier;
 import Praktikum.CourierLoginStep;
 import Praktikum.CourierStep;
@@ -25,14 +26,18 @@ public class CreateCourierTest {
     private int courierID;
     CourierLoginStep courierLoginStep=new CourierLoginStep();
 
+
     @Before
     public void setUp() {
         RestAssured.baseURI = URL;
+        //генеруруем логин еще раз так как в тесте есть ожидаемый баг(тест падает) не удалилться предыдущий курьер
+        RandomDataCourier.generateNewLogin();
 
     }
 
     @Rule
     public ErrorCollector collector = new ErrorCollector();
+
 
     @Test
     @DisplayName("Creating new courier")
@@ -56,6 +61,7 @@ public class CreateCourierTest {
         CourierClient.createCourier(courier);
         Response createCourierTwi = courierClient.createCourier(courier);
         courierStep.courierCreationLoginAlreadyUsed(createCourierTwi);
+     //тут несовпадет код ошибки
        Credentials creds= Credentials.fromCourier(courier);
        Response loge = LogINClient.courierLoginCredit(creds);
        this.courierID = courierLoginStep.getIDFOrDeleting(loge);
@@ -80,8 +86,9 @@ public class CreateCourierTest {
     }
     @Test
     @DisplayName("Creating  courier without firstName")
-    @Description("Creating  courier without password and checking the response")
+    @Description("Creating  courier without firstName and checking the response")
     public void creatingCourierWithoutfirstNameBadRequest() {
+      //у наставника уточнено что firstName обязатнльно и ждем 400
         Courier courier = new Courier(RANDOM_LOGIN, RANDOM_PASS, "");
         Response createCourierWithoutfirstName = courierClient.createCourier(courier);
         courierStep.courierAfterCreationErr(createCourierWithoutfirstName);
