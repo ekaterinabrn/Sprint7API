@@ -1,7 +1,14 @@
 package APITest;
 
+import Praktikum.Client.OrderClient;
+import Praktikum.CreateOrder;
+import Praktikum.OrderStep;
+import io.qameta.allure.Description;
+import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
+import io.restassured.response.Response;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -34,11 +41,11 @@ public class CreateOrderTest {
     }
     @Parameterized.Parameters(name = "Тестовые данные: {0}")
     public static Object[][] getTestData() {
-        return new Object[][]{{"Имя Один", "Фамилия", "Адрес 1", "Красные ворота", "79991111111", 1, "2024-09-25", "black", List.of("BLACK")},
-                {"Имя Два", "Фамилия", "Адрес 2", "Чистые пруды", "79992222222", 2, "2024-09-25", "grey", List.of("GREY")},
-                {"Имя Три", "Фамилия", "Адрес 3", "Охотный ряд", "79993333333", 3, "2024-09-25", "black and grey", List.of("BLACK", "GREY")},
-                {"Имя Четыре", "Фамилия", "Адрес 4", "Соколиная гора", "79994444444", 4, "2024-09-25", "не указан", List.of("")},
-                {"Имя Пять", "Фамилия", "Адрес 5", "Красные ворота", "79995555555", 5, "2023-09-25", "null", null}};
+        return new Object[][]{{"Света", "Тихонова", "Адрес 1", "Лубянка", "71111111111", 1, "2024-09-25", "black", List.of("BLACK")},
+                {"Катя", "Иванова", "Адрес 2", "Университет", "72222222222", 2, "2024-09-25", "grey", List.of("GREY")},
+                {"Лена", "Петрова", "Адрес 3", "Динамо", "73333333333", 3, "2024-09-25", "black and grey", List.of("BLACK", "GREY")},
+                {"Петя", "Четвертый", "Адрес 4", "Фили", "74444444444", 4, "2024-09-25", "не указан", List.of("")},
+                {"Вася", "Пятый", "Адрес 5", "Красные ворота", "75555555555", 5, "2023-09-25", "null", null}};
 
     }
 
@@ -47,5 +54,14 @@ public class CreateOrderTest {
     public void setUp() {
         RestAssured.baseURI = URL;
     }
-
+    @Test
+    @DisplayName("Success creating order")
+    @Description("Сreating order with different  color.")
+    public void creatingOrderithDifferentColor(){
+        OrderStep orderStep=new OrderStep();
+        OrderClient orderClient=new OrderClient();
+        CreateOrder order=new CreateOrder(firstName,  lastName, address,  metroStation, phone, rentTime,  deliveryDate,  comment,  color);
+        Response createOrderResponse= orderClient.createOrder(order);
+        orderStep.getOrderTrack(createOrderResponse);
+    }
 }

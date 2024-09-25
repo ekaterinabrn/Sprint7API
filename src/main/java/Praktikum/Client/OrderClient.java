@@ -10,7 +10,7 @@ import static io.restassured.RestAssured.given;
 public class OrderClient {
     @Step("Create new order")
     public Response createOrder(CreateOrder order) {
-        return given().header("Content-type", "application/json")
+        return given().log().all().header("Content-type", "application/json")
                 .body(order)
                 .when()
                 .post(CREATE_ORDER);

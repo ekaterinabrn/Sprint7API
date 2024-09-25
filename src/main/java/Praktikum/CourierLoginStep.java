@@ -5,6 +5,7 @@ import io.restassured.response.Response;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.assertNotEquals;
 
 public class CourierLoginStep {
 
@@ -24,4 +25,19 @@ public class CourierLoginStep {
         response.then()
                 .statusCode(400).assertThat().body("message", equalTo("Недостаточно данных для входа"));
     }
+    @Step("Get id courier for deleting in test")
+    public int  getIDFOrDeleting(Response courierLoginCredit){
+        int id=courierLoginCredit.then().assertThat()
+                .statusCode(200)
+                .extract()
+                .path("id");
+
+        assertNotEquals(0, id);
+
+        return id;
+    }
+    public void deleted(Response response) {
+
+    }
+
 }

@@ -1,12 +1,16 @@
 package APITest;
 
 import Praktikum.Client.CourierClient;
+import Praktikum.Client.LogINClient;
 import Praktikum.Courier;
+import Praktikum.CourierLoginStep;
 import Praktikum.CourierStep;
+import Praktikum.Credentials;
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -16,14 +20,15 @@ import static Praktikum.Constant.EndpointConstant.URL;
 import static Praktikum.Constant.RandomDataCourier.*;
 
 public class CreateCourierTest {
-    CourierStep courierStep;
-    CourierClient courierClient;
+    CourierStep courierStep= new CourierStep();
+    CourierClient courierClient =new CourierClient();
+    private int courierID;
+    CourierLoginStep courierLoginStep=new CourierLoginStep();
 
     @Before
     public void setUp() {
         RestAssured.baseURI = URL;
-        courierStep = new CourierStep();
-        courierClient=new CourierClient();
+
     }
 
     @Rule
@@ -36,6 +41,11 @@ public class CreateCourierTest {
         Courier courier = new Courier(RANDOM_LOGIN, RANDOM_PASS, RANDOM_FIRSTNAME);
         Response createCourier = courierClient.createCourier(courier);
         courierStep.courierAfterCreationSuccess(createCourier);
+        Credentials creds= Credentials.fromCourier(courier);
+        Response loge = LogINClient.courierLoginCredit(creds);
+        courierLoginStep.getIDCourier(loge);
+        this.courierID = courierLoginStep.getIDFOrDeleting(loge);
+
 
     }
 
@@ -65,6 +75,15 @@ public class CreateCourierTest {
         Courier courier = new Courier(RANDOM_LOGIN, "", RANDOM_FIRSTNAME);
         Response createCourierWithoutPassword = courierClient.createCourier(courier);
         courierStep.courierAfterCreationErr(createCourierWithoutPassword);
+    }
+    @After
+    public void deleteCourier(){
+
+        if (courierID != 0)  {
+            courierClient.deleteCourier(courierID);
+
+        }
+
     }
 
 
