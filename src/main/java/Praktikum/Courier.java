@@ -11,13 +11,9 @@ public class Courier {
         this.firstName = firstName;
     }
 
-    ;
 
     public Courier() {
     }
-
-    ;
-
 
     public String getLogin() {
         return login;

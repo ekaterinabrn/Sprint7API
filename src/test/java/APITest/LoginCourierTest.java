@@ -21,7 +21,7 @@ import static Praktikum.Constant.RandomDataCourier.*;
 public class LoginCourierTest {
     CourierClient courierClient=new CourierClient();
    CourierLoginStep courierLoginStep = new CourierLoginStep();
-    LogINClient logINClient=new LogINClient();;
+    LogINClient logINClient=new LogINClient();
     Courier courier ;
 
 
@@ -41,7 +41,7 @@ public class LoginCourierTest {
     public void courierLoginSuccess() {
          CourierLogin courierLogin = new CourierLogin(RANDOM_LOGIN, RANDOM_PASS);
          Response loginResponse = logINClient.courierLogin(courierLogin);
-courierLoginStep.getIDCourier(loginResponse);
+courierLoginStep.responseHaveIDCourier(loginResponse);
     }
 
     @DisplayName("Courier login is wrong")
@@ -93,11 +93,13 @@ courierLoginStep.getIDCourier(loginResponse);
 
     }
 
+
 @After
 public void deleteCourier(){
+  //курьер создан до теста с нормальным логином в тесте  намеренно путали данные-вызываем валидный логин и удаляем
     Credentials creds= Credentials.fromCourier(courier);
     Response loge = LogINClient.courierLoginCredit(creds);
-    courierLoginStep.getIDCourier(loge);
+    courierLoginStep.responseHaveIDCourier(loge);
     int courierID = courierLoginStep.getIDFOrDeleting(loge);
     if (courierID != 0)  {
         courierClient.deleteCourier(courierID);

@@ -11,7 +11,7 @@ public class CourierLoginStep {
 
 
     @Step("Success request return status code 200 and  id")
-    public void getIDCourier(Response response) {
+    public void responseHaveIDCourier(Response response) {
         response.then().statusCode(200).and().assertThat().body("id", notNullValue());
     }
 
@@ -25,9 +25,10 @@ public class CourierLoginStep {
         response.then()
                 .statusCode(400).assertThat().body("message", equalTo("Недостаточно данных для входа"));
     }
+
     @Step("Get id courier for deleting in test")
-    public int  getIDFOrDeleting(Response courierLoginCredit){
-        int id=courierLoginCredit.then().assertThat()
+    public int getIDFOrDeleting(Response courierLoginCredit) {
+        int id = courierLoginCredit.then().assertThat()
                 .statusCode(200)
                 .extract()
                 .path("id");
@@ -36,8 +37,6 @@ public class CourierLoginStep {
 
         return id;
     }
-    public void deleted(Response response) {
 
-    }
 
 }

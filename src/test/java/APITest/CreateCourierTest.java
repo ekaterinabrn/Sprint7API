@@ -43,7 +43,6 @@ public class CreateCourierTest {
         courierStep.courierAfterCreationSuccess(createCourier);
         Credentials creds= Credentials.fromCourier(courier);
         Response loge = LogINClient.courierLoginCredit(creds);
-        courierLoginStep.getIDCourier(loge);
         this.courierID = courierLoginStep.getIDFOrDeleting(loge);
 
 
@@ -57,6 +56,9 @@ public class CreateCourierTest {
         CourierClient.createCourier(courier);
         Response createCourierTwi = courierClient.createCourier(courier);
         courierStep.courierCreationLoginAlreadyUsed(createCourierTwi);
+       Credentials creds= Credentials.fromCourier(courier);
+       Response loge = LogINClient.courierLoginCredit(creds);
+       this.courierID = courierLoginStep.getIDFOrDeleting(loge);
     }
 
     @Test
@@ -75,6 +77,14 @@ public class CreateCourierTest {
         Courier courier = new Courier(RANDOM_LOGIN, "", RANDOM_FIRSTNAME);
         Response createCourierWithoutPassword = courierClient.createCourier(courier);
         courierStep.courierAfterCreationErr(createCourierWithoutPassword);
+    }
+    @Test
+    @DisplayName("Creating  courier without firstName")
+    @Description("Creating  courier without password and checking the response")
+    public void creatingCourierWithoutfirstNameBadRequest() {
+        Courier courier = new Courier(RANDOM_LOGIN, RANDOM_PASS, "");
+        Response createCourierWithoutfirstName = courierClient.createCourier(courier);
+        courierStep.courierAfterCreationErr(createCourierWithoutfirstName);
     }
     @After
     public void deleteCourier(){

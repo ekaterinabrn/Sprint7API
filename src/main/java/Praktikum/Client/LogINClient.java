@@ -7,7 +7,7 @@ import io.restassured.response.Response;
 
 import static Praktikum.Constant.EndpointConstant.LOGIN_COURIER;
 import static io.restassured.RestAssured.given;
-
+// эта ручка чтоб не путаться нужна для тестов на логин курьера
 public class LogINClient {
     @Step("Create courier login")
     public static Response courierLogin(CourierLogin courierLogin) {
@@ -16,6 +16,7 @@ public class LogINClient {
                 .when()
                 .post(LOGIN_COURIER);
     }
+   // я выделила себе эту ручку для удаления курьера через получение валидных данных
     public static Response courierLoginCredit(Credentials creds){
         return given().log().all().header("Content-type", "application/json")
                 .body(creds).when().post(LOGIN_COURIER);

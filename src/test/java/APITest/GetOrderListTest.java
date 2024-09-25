@@ -15,13 +15,15 @@ public class GetOrderListTest {
         RestAssured.baseURI = URL;
 
     }
+
     @Test
-    @DisplayName("Get order list response have s list orders i body")
-    public void getOrderListNot(){
+    @DisplayName("Get order list response have s list orders in body")
+    public void getOrderListNot() {
         //проверено в постмане очень долго получает от сервера список заказов
-       OrderStep orderStep=new OrderStep();
+        OrderStep orderStep = new OrderStep();
         Response responseOrder = orderStep.getOrderList();
         orderStep.orderListNotNull(responseOrder);
+        orderStep.orderListIsList(responseOrder);
     }
 
 

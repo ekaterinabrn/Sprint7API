@@ -3,8 +3,11 @@ package Praktikum;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
+import java.util.List;
+
 import static Praktikum.Constant.EndpointConstant.ORDERS_LIST;
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.notNullValue;
 
 public class OrderStep {
@@ -25,5 +28,9 @@ public class OrderStep {
     public void orderListNotNull(Response response) {
         response.then()
                 .statusCode(200).and().assertThat().body("orders", notNullValue());
+    }
+    @Step(" check that there are orders in the response and this is a list")
+    public void orderListIsList(Response response) {
+        response.then().body("orders", instanceOf(List.class));
     }
 }
