@@ -19,10 +19,8 @@ import static Praktikum.Constant.RandomDataCourier.*;
 
 
 public class LoginCourierTest {
-    CourierClient courierClient=new CourierClient();
    CourierLoginStep courierLoginStep = new CourierLoginStep();
-    LogINClient logINClient=new LogINClient();
-    Courier courier ;
+   Courier courier ;
 
 
 
@@ -30,7 +28,7 @@ public class LoginCourierTest {
     public void setUp() {
         RestAssured.baseURI = URL;
       courier = new Courier(RANDOM_LOGIN, RANDOM_PASS, RANDOM_FIRSTNAME);
-     Response createCourier = courierClient.createCourier(courier);
+     Response createCourier = CourierClient.createCourier(courier);
 
     }
 
@@ -40,7 +38,7 @@ public class LoginCourierTest {
     @Test
     public void courierLoginSuccess() {
          CourierLogin courierLogin = new CourierLogin(RANDOM_LOGIN, RANDOM_PASS);
-         Response loginResponse = logINClient.courierLogin(courierLogin);
+         Response loginResponse = LogINClient.courierLogin(courierLogin);
 courierLoginStep.responseHaveIDCourier(loginResponse);
     }
 
@@ -50,7 +48,7 @@ courierLoginStep.responseHaveIDCourier(loginResponse);
     public void courierLoginWrong() {
 
         CourierLogin courierLogin = new CourierLogin("wrong", RANDOM_PASS);
-        Response wrongLogin = logINClient.courierLogin(courierLogin);
+        Response wrongLogin = LogINClient.courierLogin(courierLogin);
         courierLoginStep.checkAnswerWithoutLoginOrPassword(wrongLogin);
     }
 
@@ -60,7 +58,7 @@ courierLoginStep.responseHaveIDCourier(loginResponse);
     public void courierPasswordWrong() {
 
         CourierLogin courierLogin = new CourierLogin(RANDOM_LOGIN, "wrong");
-        Response wrongPassword = logINClient.courierLogin(courierLogin);
+        Response wrongPassword = LogINClient.courierLogin(courierLogin);
         courierLoginStep.checkAnswerWithoutLoginOrPassword(wrongPassword);
     }
 
@@ -69,7 +67,7 @@ courierLoginStep.responseHaveIDCourier(loginResponse);
     @Description("login without courierLogin and request return status code 400")
     public void courierLoginWithoutLogin() {
         CourierLogin courierLogin = new CourierLogin("", RANDOM_PASS);
-        Response courierWithoutLoginAuthorization = logINClient.courierLogin(courierLogin);
+        Response courierWithoutLoginAuthorization = LogINClient.courierLogin(courierLogin);
         courierLoginStep.checkAnswerWithoutData(courierWithoutLoginAuthorization);
 
     }
@@ -79,7 +77,7 @@ courierLoginStep.responseHaveIDCourier(loginResponse);
     @Description("login without courier password and request return status code 400")
     public void courierLoginWithoutPassword() {
         CourierLogin courierLogin = new CourierLogin(RANDOM_LOGIN, "");
-        Response courierWithoutPasswordAuthorization = logINClient.courierLogin(courierLogin);
+        Response courierWithoutPasswordAuthorization = LogINClient.courierLogin(courierLogin);
         courierLoginStep.checkAnswerWithoutData(courierWithoutPasswordAuthorization);
 
     }
@@ -88,7 +86,7 @@ courierLoginStep.responseHaveIDCourier(loginResponse);
     @Description("login without data and request return status code 400")
     public void courierLoginWithoutData() {
         CourierLogin courierLogin = new CourierLogin("", "");
-        Response courierWithoutPasswordAuthorization = logINClient.courierLogin(courierLogin);
+        Response courierWithoutPasswordAuthorization = LogINClient.courierLogin(courierLogin);
         courierLoginStep.checkAnswerWithoutData(courierWithoutPasswordAuthorization);
 
     }
@@ -102,7 +100,7 @@ public void deleteCourier(){
     courierLoginStep.responseHaveIDCourier(loge);
     int courierID = courierLoginStep.getIDFOrDeleting(loge);
     if (courierID != 0)  {
-        courierClient.deleteCourier(courierID);
+        CourierClient.deleteCourier(courierID);
 
     }
 

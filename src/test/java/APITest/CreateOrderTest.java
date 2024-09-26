@@ -57,11 +57,10 @@ public class CreateOrderTest {
     @Test
     @DisplayName("Success creating order")
     @Description("Сreating order with different  color.")
-    public void creatingOrderithDifferentColor(){
+    public void creatingOrderWithDifferentColor(){
         OrderStep orderStep=new OrderStep();
-        OrderClient orderClient=new OrderClient();
         CreateOrder order=new CreateOrder(firstName,  lastName, address,  metroStation, phone, rentTime,  deliveryDate,  comment,  color);
-        Response createOrderResponse= orderClient.createOrder(order);
+        Response createOrderResponse= OrderClient.createOrder(order);
         orderStep.getOrderTrack(createOrderResponse);
     }
 }
