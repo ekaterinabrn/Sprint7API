@@ -22,7 +22,6 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>io.rest-assured</groupId>
@@ -61,8 +60,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-    </build>
-    <build>
         <plugins>
             <plugin>
                 <!-- настройка плагина maven-surefire-plugin -->
