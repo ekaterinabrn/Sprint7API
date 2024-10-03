@@ -21,7 +21,7 @@ public class OrderStep {
 
     @Step("Get order list")
     public Response getOrderList() {
-        return given().get(ORDERS_LIST);
+        return given().log().all().get(ORDERS_LIST);
     }
 
     @Step("List of orders is not empty and status code 200")
